@@ -1,72 +1,33 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 
-public class CubeGenerationScript : MonoBehaviour
+namespace Assets.Scripts
 {
-    public int X;
-
-    public int Y;
-
-    public int Size;
-
-    void Start ()
-	{
-	    var cube = CreateCube(Size);
-        //Instantiate(cube, new Vector3(X, Y, 0), Quaternion.identity);
-    }
-
-    private GameObject CreateCube(int size)
+    public class CubeGenerationScript : MonoBehaviour
     {
-        var cubeMesh = GenerateCubeMesh(size);
-        var cube = new GameObject();
-        var mf = cube.AddComponent<MeshFilter>();
-        cube.AddComponent<MeshRenderer>();
-        mf.mesh = cubeMesh;
+        public int X;
+        public int Y;
+        public int Size;
+        public Material CubeMaterial;
 
-        return cube;
-    }
+        private CubeBuilder cubeBuilder;
 
-    private Mesh GenerateCubeMesh(int size)
-    {
-        var m = new Mesh
+        void Start()
         {
-            name = "ScriptedMesh",
-            vertices = new[]
-            {
-                new Vector3(-size, -size,  -size),
-                new Vector3(-size,  size,  -size),
-                new Vector3( size,  size,  -size),
-                new Vector3( size, -size,  -size),
-                new Vector3( size, -size,   size),
-                new Vector3( size,  size,   size),
-                new Vector3(-size,   size,  size),
-                new Vector3(-size, -size,  size)
-            },
-            triangles = new[]
-            {
-                0, 1, 2,
-                2, 3, 0,
+            cubeBuilder = new CubeBuilder(new QuadBuilder(new MeshBuilder()));
 
-                0, 7, 6,
-                6, 1, 0,
+            CreateCube(Size);
+        }
 
-                0, 3, 4, 
-                4, 7, 0,
+        private GameObject CreateCube(int size)
+        {
+            var cube = new GameObject("ScriptedCube");
 
-                5, 4, 3,
-                3, 2, 5,
+            var mf = cube.AddComponent<MeshFilter>();
+            var mr = cube.AddComponent<MeshRenderer>();
+            mf.mesh = cubeBuilder.BuildCube(size);
+            mr.material = CubeMaterial;
 
-                5, 6, 7,
-                7, 4, 5,
-
-                5, 2, 1,
-                1, 6, 5
-            }
-        };
-
-        m.RecalculateNormals();
-
-        return m;
+            return cube;
+        }
     }
 }
