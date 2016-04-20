@@ -5,11 +5,6 @@ namespace Assets.Scripts
 {
     public class TableGenerationScript : MonoBehaviour
     {
-        //public int tabletopWidth;
-        //public int tabletopLength;
-        //public int tabletopHeight;
-        //public int legsLength;
-        //public int legsThickness;
         public Material tableMaterial;
 
         private GameObject _tableInstance;
@@ -18,11 +13,11 @@ namespace Assets.Scripts
         {
             var tableBuilder = new TableBuilder(new CuboidBuilder(new QuadBuilder(new MeshBuilder())))
             {
-                TabletopWidth = Random.Range(15, 25), //tabletopWidth,
-                TabletopLength = Random.Range(15, 37), //tabletopLength,
-                TabletopHeight = Random.Range(1, 3), //tabletopHeight,
-                LegsLength = Random.Range(5, 20), //legsLength,
-                LegsThickness = Random.Range(1, 3), //legsThickness
+                TabletopWidth = Random.Range(15, 25),
+                TabletopLength = Random.Range(15, 37),
+                TabletopHeight = Random.Range(1, 3), 
+                LegsLength = Random.Range(5, 20), 
+                LegsThickness = Random.Range(1, 3), 
             };
 
             var tableMesh = tableBuilder.BuildTable();
